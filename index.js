@@ -159,6 +159,7 @@ btnTransfer.addEventListener("click", function (e) {
   const receiverAccount = accounts.find(
     (acc) => acc.username === inputTransferTo.value
   );
+  inputTransferAmount.value = inputTransferTo.value = "";
   if (
     amount > 0 &&
     currentAccount.balance >= amount &&
