@@ -60,10 +60,12 @@ const account4 = {
 const accounts = [account1, account2, account3, account4];
 
 // My code will be below here:
-
-const displayMovements = (movements) => {
+const displayMovements = (movements, sort = false) => {
   containerMovements.innerHTML = "";
-  movements.forEach((mov, i) => {
+
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+
+  movs.forEach((mov, i) => {
     const type = mov > 0 ? "deposit" : "withdrawal";
     const html = `
     <div class="movements__row">
@@ -173,6 +175,20 @@ btnTransfer.addEventListener("click", function (e) {
   }
 });
 
+btnLoan.addEventListener("click", function (e) {
+  e.preventDefault();
+  const amount = Number(inputLoanAmount.value);
+
+  if (amount > 0 && currentAccount.movements.some((mov) => mov > amount / 10)) {
+    // add movement
+    currentAccount.movements.push(amount);
+
+    //update ui
+    updateUi(currentAccount);
+  }
+  inputLoanAmount.value = "";
+});
+
 btnClose.addEventListener("click", function (e) {
   e.preventDefault();
 
@@ -191,4 +207,11 @@ btnClose.addEventListener("click", function (e) {
   }
 
   inputCloseUsername.value = inputClosePin.value = "";
+});
+
+let sorted = false;
+btnSort.addEventListener("click", function (e) {
+  e.preventDefault();
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
 });
