@@ -30,7 +30,7 @@ const inputClosePin = document.querySelector(".form__input--pin");
 
 // Data
 const account1 = {
-  owner: "Jonas Schmedtmann",
+  owner: "Christian Iredia",
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
   interestRate: 1.2, // %
   pin: 1111,
@@ -122,3 +122,13 @@ const createUsernames = function (accs) {
   });
 };
 createUsernames(accounts);
+
+//event handlers
+let currentAccount;
+btnLogin.addEventListener("click", function (e) {
+  e.preventDefault();
+  currentAccount = accounts.find(
+    (acc) => acc.username === inputLoginUsername.value
+  );
+  console.log(currentAccount);
+});
