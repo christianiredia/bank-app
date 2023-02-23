@@ -181,6 +181,22 @@ const updateUi = (acc) => {
   calcDisplaySummary(acc);
 };
 
+const startLogOutTimer = function () {
+  // Set time to 5 minutes
+  let time = 100;
+  // Call the timer every second
+  setInterval(() => {
+    const min = String(Math.floor(time / 60)).padStart(2, 0);
+    const sec = String(time % 60).padStart(2, 0);
+    // In each call, print the remaining time to UI
+    labelTimer.textContent = `${min}:${sec}`;
+
+    // decrease 1s
+    time--;
+    // When 0 seconds, stop timer and log out user
+  }, 1000);
+};
+
 //event handlers
 let currentAccount;
 
@@ -230,6 +246,8 @@ btnLogin.addEventListener("click", function (e) {
     //clear input
     inputLoginUsername.value = inputLoginPin.value = "";
     inputLoginPin.blur();
+
+    startLogOutTimer();
     //update ui
     updateUi(currentAccount);
   }
