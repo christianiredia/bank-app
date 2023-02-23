@@ -199,14 +199,15 @@ const startLogOutTimer = function () {
     time--;
   };
   // Set time to 5 minutes
-  let time = 30;
+  let time = 300;
   // Call the timer every second
   tick();
   const timer = setInterval(tick, 1000);
+  return timer;
 };
 
 //event handlers
-let currentAccount;
+let currentAccount, timer;
 
 //experimenting with api
 const now = new Date();
@@ -250,7 +251,11 @@ btnLogin.addEventListener("click", function (e) {
     inputLoginUsername.value = inputLoginPin.value = "";
     inputLoginPin.blur();
 
-    startLogOutTimer();
+    // Timer
+    if (timer) {
+      clearInterval(timer);
+    }
+    timer = startLogOutTimer();
     //update ui
     updateUi(currentAccount);
   }
