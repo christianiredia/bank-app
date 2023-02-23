@@ -182,28 +182,31 @@ const updateUi = (acc) => {
 };
 
 const startLogOutTimer = function () {
-  // Set time to 5 minutes
-  let time = 100;
-  // Call the timer every second
-  setInterval(() => {
+  const tick = () => {
     const min = String(Math.floor(time / 60)).padStart(2, 0);
     const sec = String(time % 60).padStart(2, 0);
     // In each call, print the remaining time to UI
     labelTimer.textContent = `${min}:${sec}`;
 
+    // When 0 seconds, stop timer and log out user
+    if (time === 0) {
+      clearInterval(timer);
+      labelWelcome.textContent = `Log in to get started`;
+      containerApp.style.opacity = 0;
+    }
+
     // decrease 1s
     time--;
-    // When 0 seconds, stop timer and log out user
-  }, 1000);
+  };
+  // Set time to 5 minutes
+  let time = 30;
+  // Call the timer every second
+  tick();
+  const timer = setInterval(tick, 1000);
 };
 
 //event handlers
 let currentAccount;
-
-//fake always logged in
-currentAccount = account1;
-updateUi(currentAccount);
-containerApp.style.opacity = 100;
 
 //experimenting with api
 const now = new Date();
