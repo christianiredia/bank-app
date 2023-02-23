@@ -114,7 +114,8 @@ const displayMovements = (acc, sort = false) => {
   movs.forEach((mov, i) => {
     const type = mov > 0 ? "deposit" : "withdrawal";
     const date = new Date(acc.movementsDates[i]);
-    const displayDate = formatMovementDate(date);
+    const displayDate = formatMovementDate(date, acc.locale);
+
     const html = `
     <div class="movements__row">
           <div class="movements__type movements__type--${type}">${
@@ -188,6 +189,20 @@ currentAccount = account1;
 updateUi(currentAccount);
 containerApp.style.opacity = 100;
 
+//experimenting with api
+const now = new Date();
+const options = {
+  hour: "numeric",
+  minute: "numeric",
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  weekday: "long",
+};
+const locale = navigator.language;
+console.log(locale);
+labelDate.textContent = new Intl.DateTimeFormat("en-US", options).format(now);
+
 btnLogin.addEventListener("click", function (e) {
   e.preventDefault();
   currentAccount = accounts.find(
@@ -249,14 +264,16 @@ btnLoan.addEventListener("click", function (e) {
   const amount = Math.floor(inputLoanAmount.value);
 
   if (amount > 0 && currentAccount.movements.some((mov) => mov > amount / 10)) {
-    // add movement
-    currentAccount.movements.push(amount);
+    setTimeout(function () {
+      // add movement
+      currentAccount.movements.push(amount);
 
-    //add loan date
-    currentAccount.movementsDates.push(new Date().toISOString());
+      //add loan date
+      currentAccount.movementsDates.push(new Date().toISOString());
 
-    //update ui
-    updateUi(currentAccount);
+      //update ui
+      updateUi(currentAccount);
+    }, 2500);
   }
   inputLoanAmount.value = "";
 });
